@@ -3,11 +3,12 @@ import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import { dbConnect } from './config/dbConnect.js'
 import dotenv from 'dotenv'
-import { foodRouter } from './routes/foodRoutes.js'
 import { userRouter } from './routes/userRoutes.js'
 import { LoginRouter } from './routes/loginroute.js'
 import { refreshRouter } from './routes/refreshRoute.js'
 import cors from 'cors'
+import { hospitalsRoutes } from './routes/hospitalsRoutes.js'
+import { docterRouter } from './routes/DocterRoutes.js'
 dotenv.config();
 dbConnect();
 const app=express();
@@ -21,7 +22,9 @@ const PORT=process.env.PORT || 3500;
 app.listen(PORT,(err)=>{
     console.log(`server is listing at port ${PORT}`)
 })
-app.use(foodRouter);
+
 app.use(refreshRouter);
 app.use(userRouter);
 app.use(LoginRouter);
+app.use(hospitalsRoutes);
+app.use(docterRouter);

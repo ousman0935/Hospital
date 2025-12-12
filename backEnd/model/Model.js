@@ -6,16 +6,17 @@ const user=mongoose.Schema({
     },
     Roles:{
     type: String,
-    enum: ["User", "Clinic", "Admin"],
-    default: "User"
-},
+    enum: ["User","Admin"],
+    default: "User"},
     
     Password:{
         type:String,
         required:true},
     Email:{ 
         type:String,
-        required:true},
+        required:true,
+        unique: true
+        },
     Phone:{
         type:String,
          required:true}   

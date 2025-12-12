@@ -1,12 +1,23 @@
 import { userModel } from '../model/Model.js'
+import { DoctorModel } from '../model/Docter.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 const LoginControler =async (req,res) => {
   try {
-    console.log(req.body,"jjj")
+    let user;
+    let role;
     const {Email,Password}=req.body;
+    console.log(Email.Password)
+    
     if(!Email || !Password) return res.status(404).json({message:"All fields are required"});
-    const user=await userModel.findOne({Email});
+   user=DoctorModel.findById(Email);
+    if(user){
+  role = "Docter";
+} else {
+  user = await userModel.findOne({Email});
+  if(user) role = user.Role || "user";
+}
+     console.log(user)
     if(!user) return res.status(400).json({message:"the email is not registered register!!!"});
 const match=await bcrypt.compare(Password,user.Password);
     if(!match) return res.status(400).json({message:"Invalid credential"});
@@ -32,8 +43,12 @@ const match=await bcrypt.compare(Password,user.Password);
            sameSite:"strict",
             maxAge:30*60*1000,
           } )
-
-     res.status(200).json({message:"successfull",accessToken});
+     res.status(200).json({message:"successfull",accessToken,user: {
+      _id: user._id,  
+      Name: user.Name,
+      Email: Email,
+      Role: role,
+    },});
     
   } catch (error) {
     console.log(error)
