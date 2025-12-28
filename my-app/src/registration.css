@@ -1,0 +1,10 @@
+.inputGroup{
+    margin: 10px;
+    align-content: center;
+    flex: auto;
+    flex-direction: column;
+}
+label{
+    font-size:x-large;
+    font-weight: bolder;
+}
