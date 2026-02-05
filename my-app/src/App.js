@@ -3,8 +3,6 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Registration from './Registration.jsx';
 import Login from './Login.jsx';
 import Home from './home/Home.jsx';
-import AppPreview from './dashbord/P_dDashbord.jsx'
-import Home2 from './home/Home2.jsx';
 import ApointmentView from './adminDashbord/ApointmentView.jsx';
 import Footer from './footer/Footer.js';
 import Header from './header/Header.jsx';
@@ -14,7 +12,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BookingPage from './Booking/BookingPage.jsx';
 import { PatientDashboard } from './dashbord/PatientDashbord.jsx';
-import { DoctorDashboard } from './dashbord/docterDashbord.jsx';
+import { DoctorDashboard } from './DocterDashbord/DocterDashbord.jsx';
 import AdminDashboard from './adminDashbord/adminDashbord.jsx';
 import DoctorProfileAdmin from './adminDashbord/DocterProfile.jsx';
 import { HospitalsList } from './adminDashbord/HospitalsList.jsx';
@@ -24,12 +22,24 @@ import { AddHospital } from './adminDashbord/AddHopital.jsx';
 import RejectedView from './adminDashbord/RejectedView.jsx';
 import DocterProfile from './adminDashbord/DocterProfile.jsx';
 import AdminHospitalProfile from './adminDashbord/AdminHospitalProfile.jsx';
+import DocterHomePage from './DocterDashbord/DocterHomePage.jsx';
+import DoctorProfilePage from './DocterDashbord/Profile.jsx';
+import PatientsList from './DocterDashbord/PatientList.jsx';
+import DoctorAvailabilityPage from './DocterDashbord/Avaliablity.jsx';
+import DoctorAppointmentsPage from './DocterDashbord/AppointList.jsx';
+import HomePage from './dashbord/HomePage.jsx'
+import UserAppointmentHistory from './dashbord/UserApointmentHistory.jsx';
+import BookApointment from './dashbord/BookApointment.jsx';
+import Notifications from './dashbord/Notification.jsx';
+import UserProfilePage from './dashbord/UserProfile.jsx';
+import PatientProfileEdit from './dashbord/editProfileUser.jsx';
+import UserChatPage from './dashbord/UserChatting.jsx';
 
 function AppWrapper() {
   const location = useLocation();
 
   // List of paths where you DON'T want to show the header
-  const hideHeaderPaths = ['/app','/admin'];
+  const hideHeaderPaths = ['/docter','/admin','/user'];
 
   const showHeader = !hideHeaderPaths.some(path =>
   location.pathname.startsWith(path)
@@ -43,10 +53,25 @@ function AppWrapper() {
         <Route path='/users' element={<Users />} />
         <Route path='/newUser' element={<Registration />} />
         <Route path='/home' element={<Home />} />
-        <Route path='/docter' element={<DoctorDashboard />} />
-        <Route path='/user' element={<PatientDashboard />} />
-        <Route path='/app' element={<AppPreview />} />
-         <Route path='admin/docter/:id' element={<DoctorProfileAdmin />} />
+        <Route path='/docter' element={<DoctorDashboard />} >
+           <Route index element={<DocterHomePage/>}/>
+           <Route path='profile' element={<DoctorProfilePage/>}/>
+           <Route path='PatientsList' element={<PatientsList/>}/>
+           <Route path='Availability' element={<DoctorAvailabilityPage/>}/>
+           <Route path='Appointments' element={<DoctorAppointmentsPage/>}/>
+
+        </Route>
+        <Route path='/user' element={<PatientDashboard />} >
+             <Route index element={<HomePage/>} />
+             <Route path='Appointment'element={<UserAppointmentHistory/>}/>
+             <Route path='book' element={<BookApointment/>}/>
+             <Route path='Profile' element={<UserProfilePage/>}/>
+             <Route path='Notification' element={<Notifications/>}/>
+             <Route path='ProfileEdit' element={<PatientProfileEdit/>}/>
+             <Route path='message' element={<UserChatPage/>}/>
+
+        </Route>
+        <Route path='admin/docter/:id' element={<DoctorProfileAdmin />} />
         <Route path='/edituser/:id' element={<UserEditPage />} />
         <Route path='/booking' element={<BookingPage />} />
         <Route path='/admin' element={<AdminDashboard/>} >

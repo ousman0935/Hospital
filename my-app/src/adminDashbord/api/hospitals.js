@@ -1,6 +1,6 @@
 export const fetchHospitals=async()=>{
     try {
-         const res = await fetch("http://localhost:5000/hospitals");
+         const res = await fetch("https://hospital-b2mt.onrender.com/hospitals");
       
       if (!res.ok) {
         throw new Error("Failed to fetch hospitals");

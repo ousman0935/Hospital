@@ -12,7 +12,7 @@ const DocterProfile = () => {
   useEffect(()=>{
   const getDocter=async ()=>{
     try {
-      const res=await fetch(`http://localhost:5000/docter/${id}`)
+      const res=await fetch(`https://hospital-b2mt.onrender.com/docter/${id}`)
       if(!res.ok){
        setError(true)
       }
@@ -49,25 +49,60 @@ const counts = getCounts(appointments);
     <div className="p-6 space-y-6 bg-slate-100 min-h-screen">
 
       {/* Doctor Info Card */}
-      <div className="bg-white rounded-lg shadow p-6 flex justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">{docter?.Name}</h2>
-          <p className="text-slate-500">{docter?.Specialization}</p>
+ <div className="bg-white rounded-2xl shadow-xl p-6 flex flex-col md:flex-row gap-6 hover:scale-105 transition-transform">
 
-          <div className="mt-3 text-sm space-y-1">
-            <p><b>Email:</b> {docter?.Email}</p>
-            <p><b>Phone:</b> {docter?.Phone}</p>
-            <p><b>Hospital:</b> {docter?.HospitalId.Name}</p>
-            <p><b>Experience:</b> {docter?.Experience} years</p>
-            <p>
-              <b>Status:</b>
-              <span className="ml-2 px-2 py-1 text-xs rounded bg-green-100 text-green-700">
-                {(docter?.Status)?docter.Status:"Active"}
-              </span>
-            </p>
-          </div>
-        </div>
+  {/* 3D Icon */}
+  <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shadow-2xl transform hover:rotate-3 transition-all">
+    <span className="text-4xl text-white">🩺</span>
+  </div>
+
+  {/* Doctor Info */}
+  <div className="flex-1">
+    <h2 className="text-2xl font-bold text-gray-800">{docter?.Name}</h2>
+    <p className="text-gray-500 text-sm">{docter?.Specialization}</p>
+
+    <div className="mt-3 text-sm space-y-1">
+      <p><b>Email:</b> {docter?.Email}</p>
+      <p><b>Phone:</b> {docter?.Phone}</p>
+      <p><b>Hospital:</b> {docter?.HospitalId?.Name}</p>
+      <p><b>Experience:</b> {docter?.Experience} years</p>
+      <p>
+        <b>Status:</b>
+        <span className={`ml-2 px-2 py-1 text-xs rounded ${
+          docter?.Status === "Inactive"
+            ? "bg-red-100 text-red-700"
+            : "bg-green-100 text-green-700"
+        }`}>
+          {docter?.Status || "Active"}
+        </span>
+      </p>
+    </div>
+
+    {/* About Section */}
+    {docter?.About && (
+      <div className="mt-4 text-sm text-gray-600">
+        <h3 className="font-semibold mb-1">About</h3>
+        <p>{docter.About}</p>
       </div>
+    )}
+  </div>
+
+  {/* Action Buttons */}
+  <div className="flex flex-col gap-2 md:justify-start">
+    <button
+      className="px-4 py-2 bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition"
+    >
+      Edit
+    </button>
+    <button
+      className="px-4 py-2 bg-green-600 text-white rounded-xl shadow hover:bg-green-700 transition"
+    >
+      Manage Status
+    </button>
+  </div>
+
+</div>
+
 
       {/* Appointment Stats */}
       <div className="grid grid-cols-4 gap-4">

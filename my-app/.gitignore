@@ -11,3 +11,6 @@ build/
 
 # Editor
 .vscode/
+node_modules
+
+../backEnd

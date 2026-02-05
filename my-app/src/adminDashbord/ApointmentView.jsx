@@ -55,78 +55,173 @@ export const ApointmentView = () => {
          const successAppointments = appointments.filter((a) => a.status === "success");
        
         
+  
   return (
-    <div className="bg-white rounded shadow p-4">
-           <div className="flex items-center justify-between mb-4">
-             <h2 className="text-lg font-semibold">Appointments</h2>
-             <div className="flex items-center gap-2">
-               <input type="date" className="border px-2 py-1 rounded" onChange={(e) => setFilters((s) => ({ ...s, date: e.target.value }))} />
-               <select onChange={(e) => setFilters((s) => ({ ...s, doctorId: e.target.value }))} className="border px-2 py-1 rounded">
-                 <option value="">All Doctors</option>
-                 {doctors.map((d) => <option key={d._id} value={d._id}>{d.name}</option>)}
-               </select>
-               <select onChange={(e) => setFilters((s) => ({ ...s, status: e.target.value }))} className="border px-2 py-1 rounded">
-                 <option value="">All Status</option>
-                 <option value="success">Success</option>
-                 <option value="rejected">Rejected</option>
-                 <option value="pending">Pending</option>
-               </select>
-               <button className="px-3 py-1 rounded bg-blue-600 text-white" onClick={() => setFilters({ date: "", doctorId: "", userId: "", hospitalId: "", status: "" })}>Clear</button>
-             </div>
-           </div>
+  <div className="bg-slate-50 rounded-2xl shadow-lg p-2 w-full">
 
-           <div className="overflow-x-auto">
-  <table className="w-full border border-gray-200">
-    <thead className="bg-gray-100">
-      <tr>
-        <th className="border px-3 py-2">Patient</th>
-        <th className="border px-3 py-2">Doctor</th>
-        <th className="border px-3 py-2">Hospital</th>
-        <th className="border px-3 py-2">Date</th>
-        <th className="border px-3 py-2">Status</th>
-        <th className="border px-3 py-2">Reason</th>
-      </tr>
-    </thead>
+    {/* ================= HEADER ================= */}
+    <h2 className="text-2xl font-bold text-slate-800 mb-2">
+      Appointments (Admin View)
+    </h2>
 
-    <tbody>
-      {appointmentsFiltered.length === 0 ? (
-        <tr>
-          <td colSpan="6" className="text-center py-4 text-gray-500">
-            No appointments found
-          </td>
-        </tr>
-      ) : (
-        appointmentsFiltered.map((a) => {
-          const doctor = doctors.find(d => d._id === a.doctorId);
-          const hospital = hospitals.find(h => h._id === a.hospitalId);
+    {/* ================= STATS (USING YOUR VARIABLES) ================= */}
+    <div className="grid grid-cols-1 grid-cols-1 sm:grid-cols-4  gap-2 mb-1">
+      <div className="bg-white rounded-2xl p-2 shadow-[0_15px_30px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition">
+        <div className="text-sm text-slate-500">Total Appointments</div>
+        <div className="text-3xl font-bold text-slate-800 mt-2">
+          {stats.totalAppointments}
+        </div>
+      </div>
 
-          return (
-            <tr key={a._id}>
-              <td className="border px-3 py-2">{a.user?.name}</td>
-              <td className="border px-3 py-2">{doctor?.name}</td>
-              <td className="border px-3 py-2">{hospital?.name}</td>
-              <td className="border px-3 py-2">
-                {new Date(a.date).toLocaleString()}
-              </td>
-              <td className="border px-3 py-2">
-                <span className={`px-2 py-1 rounded text-white
-                  ${a.status === "success" ? "bg-green-600" :
-                    a.status === "rejected" ? "bg-red-600" :
-                    "bg-yellow-500"}`}>
-                  {a.status}
-                </span>
-              </td>
-              <td className="border px-3 py-2">{a.reason}</td>
-            </tr>
-          );
-        })
+      <div className="bg-white rounded-2xl p-2 shadow-[0_15px_30px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition">
+        <div className="text-sm text-slate-500">Pending</div>
+        <div className="text-3xl font-bold text-yellow-600 mt-2">
+          {appointments.length - successAppointments.length - rejectedAppointments.length}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl p-2 shadow-[0_15px_30px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition">
+        <div className="text-sm text-slate-500">Approved by Doctors</div>
+        <div className="text-3xl font-bold text-green-600 mt-2">
+          {successAppointments.length}
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl p-2 shadow-[0_15px_30px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition">
+        <div className="text-sm text-slate-500">Rejected by Doctors</div>
+        <div className="text-3xl font-bold text-red-600 mt-2">
+          {rejectedAppointments.length}
+        </div>
+      </div>
+    </div>
+
+    {/* ================= FILTERS (SAME LOGIC) ================= */}
+    <div className="bg-white rounded-xl p-4 shadow mb-6 flex flex-wrap gap-3">
+      <select
+  onChange={(e) =>
+    setFilters((s) => ({ ...s, hospitalId: e.target.value }))
+  }
+>
+  <option value="">All Hospitals</option>
+  {hospitals.map((h) => (
+    <option key={h._id} value={h._id}>
+      {h.name}
+    </option>
+  ))}
+</select>
+
+      <input
+        type="date"
+        className="border px-3 py-2 rounded-lg"
+        onChange={(e) => setFilters(s => ({ ...s, date: e.target.value }))}
+      />
+
+      <select
+        className="border px-3 py-2 rounded-lg"
+        onChange={(e) => setFilters(s => ({ ...s, doctorId: e.target.value }))}
+      >
+        <option value="">All Doctors</option>
+        {doctors.map(d => (
+          <option key={d._id} value={d._id}>{d.name}</option>
+        ))}
+      </select>
+
+      <select
+        className="border px-3 py-2 rounded-lg"
+        onChange={(e) => setFilters(s => ({ ...s, status: e.target.value }))}
+      >
+        <option value="">All Status</option>
+        <option value="success">Approved</option>
+        <option value="rejected">Rejected</option>
+        <option value="pending">Pending</option>
+      </select>
+
+      <button
+        className="px-4 py-2 rounded-lg bg-slate-200 hover:bg-slate-300 transition"
+        onClick={() =>
+          setFilters({ date: "", doctorId: "", userId: "", hospitalId: "", status: "" })
+        }
+      >
+        Clear
+      </button>
+    </div>
+
+    {/* ================= APPOINTMENTS LIST ================= */}
+    <div className="space-y-4">
+      {appointmentsFiltered.length === 0 && (
+        <div className="text-center text-slate-400 py-10">
+          No appointments found
+        </div>
       )}
-    </tbody>
-  </table>
-</div>
 
-           </div>
-  )
+      {appointmentsFiltered.map((a) => {
+        const doctor = doctors.find(d => d._id === a.doctorId);
+        const hospital = hospitals.find(h => h._id === a.hospitalId);
+
+        return (
+          <div
+            key={a._id}
+            className="bg-white rounded-2xl p-5
+                       shadow-[0_12px_25px_rgba(0,0,0,0.12)]
+                       hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.18)]
+                       transition-all"
+          >
+            {/* TOP */}
+            <div className="flex justify-between items-start gap-4">
+              <div>
+                <div className="text-lg font-semibold text-slate-800">
+                  {a.user?.name ?? "Unknown User"}
+                </div>
+                <div className="text-sm text-slate-500 mt-1">
+                  {doctor?.name ?? "-"} • {doctor?.specialization ?? "-"}
+                </div>
+                <div className="text-sm text-slate-500">
+                  {hospital?.name ?? "-"}
+                </div>
+              </div>
+
+              {/* STATUS (READ-ONLY) */}
+              <span
+                className={`px-4 py-1 rounded-full text-sm font-medium ${
+                  a.status === "success"
+                    ? "bg-green-100 text-green-700"
+                    : a.status === "rejected"
+                    ? "bg-red-100 text-red-700"
+                    : "bg-yellow-100 text-yellow-700 animate-pulse"
+                }`}
+              >
+                {a.status === "success"
+                  ? "Approved by Doctor"
+                  : a.status === "rejected"
+                  ? "Rejected by Doctor"
+                  : "Pending – Waiting for Doctor"}
+              </span>
+            </div>
+
+            {/* DETAILS */}
+            <div className="mt-4 text-sm text-slate-600 space-y-1">
+              <div>📅 {new Date(a.date).toLocaleString()}</div>
+              <div>📝 Reason: {a.reason}</div>
+            </div>
+
+            {/* ADMIN ACTION */}
+            <div className="mt-4 flex justify-end">
+              <button
+                className="px-4 py-2 rounded-lg border hover:bg-slate-50 transition text-sm"
+                onClick={() => console.log("view appointment", a._id)}
+              >
+                View Details
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+);
+
+
+
 }
 
 export default ApointmentView

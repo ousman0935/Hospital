@@ -1,72 +1,92 @@
-import { UserContext } from "../context/contextApi";
 import { useContext } from "react";
+import { UserContext } from "../context/contextApi";
+import { FaUserMd, FaCalendarCheck, FaEnvelope, FaHistory } from "react-icons/fa";
+import { MdSearch } from "react-icons/md";
+import { Outlet } from "react-router-dom";
+import Header from "./Header";
+import Footer from "../footer/Footer";
+import { useState } from "react";
 export function PatientDashboard() {
-  const { user } = useContext(UserContext);
+const [showHelpModal, setShowHelpModal] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 px-4 py-5 space-y-5 max-w-6xl mx-auto">
+    <>
+    <Header/>
+<Outlet/>
+<button
+  onClick={() => setShowHelpModal(true)}
+  className="fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-3 rounded-full shadow-lg hover:bg-blue-700 flex items-center gap-2 z-40"
+>
+  💬 Help
+</button>
+{showHelpModal && (
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-lg">
+      <h2 className="text-lg font-semibold text-slate-800 mb-1">
+        Need help?
+      </h2>
+      <p className="text-sm text-slate-500 mb-5">
+        Contact our support team anytime
+      </p>
 
-      {/* HERO */}
-     <div className="rounded-2xl p-6 text-white 
-bg-gradient-to-br from-sky-600 to-indigo-600 shadow-xl">
-  <h1 className="text-2xl font-bold">
-    Hi, {user?.Name || "Patient"}
-  </h1>
-  <p className="text-sm opacity-90 mt-1">
-    Book and manage your care easily
-  </p>
+      {/* SUPPORT OPTIONS */}
+      <div className="space-y-3">
+        {/* CALL */}
+        <a
+          href="tel:+251900000000"
+          className="flex items-center gap-3 p-3 border rounded-xl hover:bg-slate-50"
+        >
+          📞
+          <div>
+            <p className="font-medium text-slate-700">Call Support</p>
+            <p className="text-xs text-slate-500">Fast help by phone</p>
+          </div>
+        </a>
 
-  <div className="mt-5 flex gap-3">
-    <button className="bg-white text-sky-600 px-5 py-2 rounded-xl font-medium">
-      Book Doctor
-    </button>
-    <button className="bg-white/20 px-5 py-2 rounded-xl">
-      My Appointments
-    </button>
-  </div>
-</div>
+        {/* WHATSAPP */}
+        <a
+          href="https://wa.me/251900000000"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 p-3 border rounded-xl hover:bg-slate-50"
+        >
+          💬
+          <div>
+            <p className="font-medium text-slate-700">WhatsApp Chat</p>
+            <p className="text-xs text-slate-500">Recommended</p>
+          </div>
+        </a>
 
-
-      {/* SEARCH (Merged from Home2) */}
-    <div className="bg-white rounded-2xl shadow-md p-4 flex items-center gap-3">
-  <span className="w-3 h-3 bg-sky-500 rounded-full"></span>
-  <input
-    className="w-full outline-none bg-transparent"
-    placeholder="Search doctors, clinics, specialties"
-  />
-</div>
-
-      {/* STATS (Horizontal scroll on mobile) */}
-      <div className="flex gap-3 overflow-x-auto pb-2">
-        {[
-          { title: "Next Appointment", value: "Dec 10" },
-          { title: "Total Visits", value: 5 },
-          { title: "Pending", value: 1 },
-          { title: "Messages", value: 2 },
-        ].map((s, i) => (
-    <div className="min-w-[160px] rounded-2xl 
-    bg-white/80 backdrop-blur shadow-md p-4">
-      <div className="text-xs uppercase tracking-wide text-gray-400">
-        {s.title}
+        {/* EMAIL (OPTIONAL) */}
+        <a
+          href="mailto:support@yourapp.com"
+          className="flex items-center gap-3 p-3 border rounded-xl hover:bg-slate-50"
+        >
+          ✉️
+          <div>
+            <p className="font-medium text-slate-700">Email Support</p>
+            <p className="text-xs text-slate-500">Less urgent</p>
+          </div>
+        </a>
       </div>
-      <div className="text-2xl font-bold mt-1">{s.value}</div>
-    </div>
-  ))}
-      </div>
 
-      {/* UPCOMING APPOINTMENT */}
-      <div className="bg-white rounded-xl shadow p-5">
-        <h3 className="font-semibold mb-3">Upcoming Appointment</h3>
-        <div className="text-sm text-gray-600 space-y-1">
-          <p><b>Doctor:</b> Dr. Alem</p>
-          <p><b>Date:</b> 10 Dec 2025 – 10:30 AM</p>
-          <p><b>Clinic:</b> Central Clinic</p>
-        </div>
-        <button className="mt-4 border px-4 py-2 rounded-lg">
-          View Details
+      {/* ACTION */}
+      <div className="flex justify-end mt-6">
+        <button
+          onClick={() => setShowHelpModal(false)}
+          className="px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-100"
+        >
+          Close
         </button>
       </div>
-
     </div>
+  </div>
+)}
+
+    </>
+  
   );
 }
+
+/* ================= STAT CARD ================= */
+

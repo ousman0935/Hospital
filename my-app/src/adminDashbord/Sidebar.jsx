@@ -1,60 +1,130 @@
-import React, { useState } from 'react'
-import { useQuery } from '@tanstack/react-query';
-import { fetchDocters } from './api/doctors';
-import { fetchHospitals } from './api/hospitals';
-import { Link, NavLink } from 'react-router-dom';
-const Sidebar = () => {
-  const [activeView,setActiveView]=useState()
-   const { data:docters,
-         isLoading,
-         isError,
-         Error
-     }=useQuery({
-      queryKey:["docters"],
-      queryFn:fetchDocters
-     });
-    const {data:hospitals,
-          isHospitalsLoading,
-          isHospitalsError,}
-        =useQuery({
-          queryKey:["Hospitals"],
-          queryFn:fetchHospitals
-        });
-  const totalDoctors = docters?.length ?? 0;
-  const totalHospitals = hospitals?.length ?? 0;
-  const totalAppointments=2
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { FaHospital, FaUserMd, FaClipboardList, FaTimes, FaPlus } from 'react-icons/fa';
 
-    function btnClass(view) {
-      return `w-full text-left px-3 py-2 rounded ${activeView === view ? "bg-white border-2 shadow" : "hover:bg-white/60"}`;
-    }
+const menuItems = {
+  overview: [
+    { label: 'Overview', icon: <FaClipboardList />, path: '/admin' },
+  ],
+  management: [
+    { label: 'Hospitals', icon: <FaHospital />, path: '/admin/hospitals' },
+    { label: 'Doctors', icon: <FaUserMd />, path: '/admin/docters' },
+    { label: 'Appointments', icon: <FaClipboardList />, path: '/admin/appointments' },
+    { label: 'Rejected', icon: <FaTimes />, path: '/admin/rejected' },
+  ],
+  actions: [
+    { label: 'Add Hospital', icon: <FaPlus />, path: '/admin/addHospital' },
+  ],
+};
 
+const Sidebar = ({
+  totalDoctors = 0,
+  totalHospitals = 0,
+  totalAppointments = 2,
+  collapsed,
+  setCollapsed,
+}) => {
   return (
+    <div
+      className={`
+        ${collapsed ? 'w-16' : 'w-48'}
+        bg-slate-50 h-full border-r shadow-md
+        flex flex-col transition-all duration-300
+      `}
+    >
+      {/* Toggle Button */}
+      <button
+        onClick={() => setCollapsed(!collapsed)}
+        className="p-2 m-2 rounded-md bg-white shadow text-slate-700 hover:bg-blue-50"
+      >
+        {collapsed ? '➡' : '⬅'}
+      </button>
 
-        // <Route path='hospitals' element={<HospitalsList/>}/>
-          // <Route path='docters' element={<DoctorsByHospital/>}/>
-          // <Route path='addHospital' element={<AddHospital/>}/>
-      <div className="w-64 bg-slate-50 h-screen p-4 border-r">
-        <nav className="flex flex-col gap-2">
-          <NavLink className={btnClass("overview")} onClick={() => setActiveView("overview")} to='/admin'>Overview</NavLink>
-          <NavLink className={btnClass("hospitals")} onClick={() => setActiveView("hospitals")} to='/admin/hospitals'>Hospitals</NavLink>
-          <NavLink className={btnClass("doctors")} onClick={() => setActiveView("doctors")} to='/admin/docters'>Docters</NavLink>
-          <NavLink className={btnClass("appointments")} onClick={() => setActiveView("appointments")} to='/admin/appointments'>  Appointments</NavLink>
-         <NavLink className={btnClass("rejected")}onClick={() => setActiveView("rejected")} to='/admin/rejected'>  Rejected</NavLink>
-        <NavLink className={btnClass("addHospital")} onClick={() => setActiveView("addHospital")} to='/admin/addHospital'>addHospital</NavLink>
+      {/* Menu */}
+      <nav className="flex-1 flex flex-col gap-4 p-2 overflow-y-auto">
 
-        </nav>
-        {(isLoading || isHospitalsLoading) && <p>Loading...</p>}
+        {/* Overview */}
+        <div>
+          {!collapsed && (
+            <p className="text-xs text-slate-500 uppercase px-2 mb-1">
+              Overview
+            </p>
+          )}
+          {menuItems.overview.map((item) => (
+            <NavLink
+              key={item.label}
+              to={item.path}
+              className={({ isActive }) =>
+                `flex items-center gap-2 p-2 rounded-md hover:bg-white/50 transition-all text-sm
+                ${isActive ? 'bg-white shadow font-semibold' : ''}`
+              }
+            >
+              <span className="text-lg">{item.icon}</span>
+              {!collapsed && <span>{item.label}</span>}
+            </NavLink>
+          ))}
+        </div>
 
-        {!(isLoading || isHospitalsLoading || isError || isHospitalsError)}
-        <div className="mt-6">
-          <h3 className="text-sm text-slate-600">Totals</h3>
-          <div className="mt-2 text-lg font-bold">{totalAppointments} Appointments</div>
-          <div className="text-sm">{totalDoctors} Doctors • {totalHospitals} Hospitals</div>
-        </div> 
-      </div> 
-    );
+        {/* Management */}
+        <div>
+          {!collapsed && (
+            <p className="text-xs text-slate-500 uppercase px-2 mb-1">
+              Management
+            </p>
+          )}
+          {menuItems.management.map((item) => (
+            <NavLink
+              key={item.label}
+              to={item.path}
+              className={({ isActive }) =>
+                `flex items-center gap-2 p-2 rounded-md hover:bg-white/50 transition-all text-sm
+                ${isActive ? 'bg-white shadow font-semibold' : ''}`
+              }
+            >
+              <span className="text-lg">{item.icon}</span>
+              {!collapsed && <span>{item.label}</span>}
+            </NavLink>
+          ))}
+        </div>
 
-   
-}
+        {/* Actions */}
+        <div>
+          {!collapsed && (
+            <p className="text-xs text-slate-500 uppercase px-2 mb-1">
+              Actions
+            </p>
+          )}
+          {menuItems.actions.map((item) => (
+            <NavLink
+              key={item.label}
+              to={item.path}
+              className={({ isActive }) =>
+                `flex items-center gap-2 p-2 rounded-md hover:bg-white/50 transition-all text-sm
+                ${isActive ? 'bg-white shadow font-semibold' : ''}`
+              }
+            >
+              <span className="text-lg">{item.icon}</span>
+              {!collapsed && <span>{item.label}</span>}
+            </NavLink>
+          ))}
+        </div>
 
-export default Sidebar
+      </nav>
+
+      {/* Totals */}
+      {!collapsed && (
+        <div className="p-1 text-sm border-t">
+          <h3 className="text-slate-600 text-xs">Totals</h3>
+          <p className="font-bold text-sm mt-1">
+            {totalAppointments} Appointments
+          </p>
+          <p>
+            {totalDoctors} Doctors • {totalHospitals} Hospitals
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Sidebar;

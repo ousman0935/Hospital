@@ -15,6 +15,7 @@ import { PatientHistoryPreview } from "./PatientHistryView.jsx";
 import { useQuery } from "@tanstack/react-query";
 import { fetchHospitals } from "./api/hospitals.js";
 import { fetchDocters } from "./api/doctors.js";
+import ApointmentView from "./ApointmentView.jsx";
 
 const AdminOverview = () => {
     const [hospitals, setHospitals] = useState([]);
@@ -70,8 +71,8 @@ const AdminOverview = () => {
           queryKey:["Hospitals"],
           queryFn:fetchHospitals
         });
-     const totalDoctors=docters.length;
-     const totalHospitals=hospitalls.length
+     const totalDoctors=docters?.length;
+     const totalHospitals=hospitalls?.length
    
      // Derived lists
      const appointmentsFiltered = appointments.filter((a) => {
@@ -89,81 +90,103 @@ const AdminOverview = () => {
     
    
    
-     function StatsCards() {
-       return (
-         <div className="grid grid-cols-3 gap-4">
-           <motion.div className="p-4 bg-white rounded shadow" layout>
-             <div className="text-sm text-slate-500">Total Appointments</div>
-             <div className="text-2xl font-bold">{stats.totalAppointments}</div>
-           </motion.div>
-           <motion.div className="p-4 bg-white rounded shadow" layout>
-             <div className="text-sm text-slate-500">Total Doctors</div>
-             <div className="text-2xl font-bold">{(isLoading)?"LOADING": totalDoctors}</div>
-           </motion.div>
-           <motion.div className="p-4 bg-white rounded shadow" layout>
-             <div className="text-sm text-slate-500">Total Hospitals</div>
-             <div className="text-2xl font-bold">{(isHospitalsLoading)?"LOADING":totalHospitals}</div>
-           </motion.div>
-         </div>
-       );
-     }
-   
-   
-   
-     function AppointmentsView() {
-       return (
-         <div className="bg-white rounded shadow p-4">
-           <div className="flex items-center justify-between mb-4">
-             <h2 className="text-lg font-semibold">Appointments</h2>
-             <div className="flex items-center gap-2">
-               <input type="date" className="border px-2 py-1 rounded" onChange={(e) => setFilters((s) => ({ ...s, date: e.target.value }))} />
-               <select onChange={(e) => setFilters((s) => ({ ...s, doctorId: e.target.value }))} className="border px-2 py-1 rounded">
-                 <option value="">All Doctors</option>
-                 {doctors.map((d) => <option key={d._id} value={d._id}>{d.name}</option>)}
-               </select>
-               <select onChange={(e) => setFilters((s) => ({ ...s, status: e.target.value }))} className="border px-2 py-1 rounded">
-                 <option value="">All Status</option>
-                 <option value="success">Success</option>
-                 <option value="rejected">Rejected</option>
-                 <option value="pending">Pending</option>
-               </select>
-               <button className="px-3 py-1 rounded bg-blue-600 text-white" onClick={() => setFilters({ date: "", doctorId: "", userId: "", hospitalId: "", status: "" })}>Clear</button>
-             </div>
-           </div>
-   
-           <div className="space-y-3">
-             {appointmentsFiltered.map((a) => (
-               <div key={a._id} className="border rounded p-3 flex items-center justify-between">
-                 <div>
-                   <div className="font-medium">{a.user?.name ?? "Unknown User"} — {formatDate(a.date)}</div>
-                   <div className="text-sm text-slate-500">Doctor: {doctors.find((d) => d._id === a.doctorId)?.name ?? "-"} • Hospital: {hospitals.find((h) => h._id === a.hospitalId)?.name ?? "-"}</div>
-                   <div className="text-sm">Reason: {a.reason}</div>
-                 </div>
-                 <div className="flex items-center gap-2">
-                   <div className={a.status === "rejected" ? "text-red-600" : "text-green-600"}>{a.status}</div>
-                   <button className="px-3 py-1 rounded border text-sm" onClick={() => console.log("view appointment", a._id)}>Details</button>
-                 </div>
-               </div>
-             ))}
-             {appointmentsFiltered.length === 0 && <div className="text-center text-slate-500 p-6">No appointments match filters.</div>}
-           </div>
-         </div>
-       );
-   
-       function formatDate(d) {
-         try {
-           return new Date(d).toLocaleString();
-         } catch (e) {
-           return d;
-         }
-       }
-     }
-   
+
+function StatsCards({ stats, totalDoctors, totalHospitals, isLoading, isHospitalsLoading }) {
+  const cards = [
+    {
+      title: "Total Appointments",
+      value: stats.totalAppointments ?? 0,
+      hint: "All time",
+      icon: "📅",
+      color: "text-indigo-500",
+    },
+    {
+      title: "Today's Appointments",
+      value: stats.todayAppointments ?? 0,
+      hint: "Scheduled today",
+      icon: "🔔",
+      color: "text-blue-500",
+    },
+    {
+      title: "Successful Appointments",
+      value: stats.successfulAppointments ?? 0,
+      hint: "Completed",
+      icon: "✅",
+      color: "text-green-500",
+    },
+    {
+      title: "Total Doctors",
+      value: isLoading ? "—" : totalDoctors,
+      hint: "Registered doctors",
+      icon: "👨‍⚕️",
+      color: "text-emerald-500",
+    },
+    {
+      title: "Total Hospitals",
+      value: isHospitalsLoading ? "—" : totalHospitals,
+      hint: "Active clinics",
+      icon: "🏥",
+      color: "text-rose-500",
+    },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-5 lg:grid-cols-5 gap-2 w-full">
+      {cards.map((card, idx) => (
+        <motion.div
+          key={idx}
+          whileHover={{ y: -6, scale: 1.03 }}
+          transition={{ type: "spring", stiffness: 260, damping: 20 }}
+          className="
+            relative overflow-hidden
+            p-4 rounded-3xl
+            bg-white/80 backdrop-blur
+            border border-white/60
+            shadow-[0_20px_40px_rgba(0,0,0,0.08)]
+          "
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-slate-100/40" />
+
+          <div className="relative z-10 flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-slate-500">
+                {card.title}
+              </span>
+              <div className="w-11 h-11 rounded-2xl flex items-center justify-center bg-slate-100 shadow-inner">
+                <span className={`text-xl ${card.color}`}>{card.icon}</span>
+              </div>
+            </div>
+
+            <span className="text-3xl font-bold text-slate-800">
+              {card.value}
+            </span>
+
+            <span className="text-xs text-slate-400">
+              {card.hint}
+            </span>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+
+
+
      function RejectedList() {
        return (
          <div className="bg-white rounded shadow p-4">
-           <h2 className="text-lg font-semibold mb-3">Rejected Appointments</h2>
+<h2 className="text-lg font-semibold mb-3 text-red-600">
+  Rejected Appointments
+</h2>
            <div className="space-y-2">
+            {rejectedAppointments.length === 0 && (
+  <div className="text-sm text-slate-400">
+    No rejected appointments 🎉
+  </div>
+)}
+
              {rejectedAppointments.map((r) => (
                <div key={r._id} className="border p-3 rounded flex items-center justify-between">
                  <div>
@@ -182,25 +205,108 @@ const AdminOverview = () => {
    
        function formatDate(d) { try { return new Date(d).toLocaleString(); } catch (e) { return d; } }
      }
-  return (
-    
-            <div className="space-y-4">
-              <StatsCards />
-                    <AppointmentsView />
-              <div className="grid grid-cols-2 gap-4">
-                <HospitalsList />
-                <DoctorsByHospital />
-                <br/>
-               
-              </div>
-         
-              <div className="grid grid-cols-2 gap-4">
-                <DoctorHomePreview />
-                <PatientHistoryPreview />
-              </div>
-            </div>
-       
-  )
+ return (
+  <div className="w-full min-h-screen px-4 md:px-6
+   py-6 space-y-8 bg-slate-50">
+
+    {/* ================= HEAR ================= */}
+    <div className="flex flex-col gap-1">
+      <h1 className="text-2xl md:text-3xl font-bold text-slate-800">
+        Admin Dashboard
+      </h1>
+      <p className="text-sm text-slate-500">
+        Overview of clinic operations, appointments, and activity
+      </p>
+    </div>
+
+    {/* ================ATS ================= */}
+    <StatsCards
+      stats={stats}
+      totalDoctors={totalDoctors}
+      totalHospitals={totalHospitals}
+      isLoading={isLoading}
+      isHospitalsLoading={isHospitalsLoading}
+    />
+
+    {/* ================= MAIN GRID ================= */}
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">
+
+      {/* Appointments (Main Focus) */}
+      <div className="xl:col-span-2 bg-white rounded-3xl shadow-md p-4 md:p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-slate-800">
+            Appointments Overview
+          </h2>
+          <span className="text-sm text-slate-400">Recent & status</span>
+        </div>
+        <ApointmentView />
+      </div>
+
+      {/* Rejected / Alerts */}
+      <div className="bg-white rounded-3xl shadow-md p-4 md:p-6">
+        <RejectedList />
+      </div>
+    </div>
+
+    {/* ================= SECONDARY GRID ================= */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <div className="bg-white rounded-3xl shadow-md p-4 md:p-6">
+        <div className="mb-3">
+          <h2 className="text-lg font-semibold text-slate-800">
+            Hospitals
+          </h2>
+          <p className="text-sm text-slate-400">
+            Registered clinics & hospitals
+          </p>
+        </div>
+        <HospitalsList />
+      </div>
+
+      <div className="bg-white rounded-3xl shadow-md p-4 md:p-6">
+        <div className="mb-3">
+          <h2 className="text-lg font-semibold text-slate-800">
+            Doctors
+          </h2>
+          <p className="text-sm text-slate-400">
+            Doctors grouped by hospital
+          </p>
+        </div>
+        <DoctorsByHospital />
+      </div>
+    </div>
+
+    {/* ================= BOTTOM GRID ================= */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <div className="bg-white rounded-3xl shadow-md p-4 md:p-6">
+        <div className="mb-3">
+          <h2 className="text-lg font-semibold text-slate-800">
+            Doctor Preview
+          </h2>
+          <p className="text-sm text-slate-400">
+            Doctor activity snapshot
+          </p>
+        </div>
+        <DoctorHomePreview />
+      </div>
+
+      <div className="bg-white rounded-3xl shadow-md p-4 md:p-6">
+        <div className="mb-3">
+          <h2 className="text-lg font-semibold text-slate-800">
+            Patient History
+          </h2>
+          <p className="text-sm text-slate-400">
+            Recent patient interactions
+          </p>
+        </div>
+        <PatientHistoryPreview />
+      </div>
+    </div>
+
+  </div>
+);
+
 }
 
 export default AdminOverview

@@ -1,117 +1,297 @@
 import { Link } from 'react-router-dom';
 import './registration.css'
+import Login from './Login';
 import { useState } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUser,
+  faEnvelope,
+  faLock,
+  faPhone,
+  faUserShield,
+  faStethoscope,
+  faBriefcase
+} from "@fortawesome/free-solid-svg-icons";
+
+
 function Registration(){
   const [Role,setRole]=useState("");
+  const[showLogin,setShowLogin]=useState(false)
+  const[showPassword,setShowPassword]=useState(false)
+    const[showConfirmPassword ,setShowConfirmPassword]=useState(false)
+
     return (  
-         <div className="flex justify-center items-center min-h-screen bg-gray-100">
-           <form
-             className="bg-white shadow-md sm:px-8 py-4
-               rounded-3xl sm:mx-4 mx-2 border-4 border-blue-500 w-full max-w-md">
+      <>
+   <div className="flex justify-center items-start min-h-screen bg-gray-100 py-10">
+  <form
+    className="
+      w-full max-w-lg
+      bg-white/80 backdrop-blur-xl
+      rounded-3xl
+      shadow-[0_30px_80px_rgba(0,0,0,0.35)]
+      border border-white/40
+      p-8
+    "
+  >
+    {/* Header */}
+    <div className="text-center mb-8">
+      <h1 className="text-3xl font-extrabold text-gray-800">
+        Create Account
+      </h1>
+      <p className="text-gray-500 mt-2">
+        Register to access ClinicBooking
+      </p>
+    </div>
 
-                <h1 className="text-center font-bolder text-white bg-blue-600 text-3xl sm:p-2 rounded-t-lg">Registration Form </h1>
-                <div className="inputGroup flex sm:px-2">
-                   <label htmlFor="name" className="w-full  TEXT-GRAY-700 ">Name:
-                   </label>
-                 <input  id="name" className='rounded-md focus:ring-2 focus:border-green-600
-                 focus:outline-none my-2 p-2 border-4 border-green-300 sm:text-xl hover:text-red-500' placeholder="Enter Your Name Dear" type="text" />
+    {/* Name */}
+    <div className="relative mb-5">
+      <FontAwesomeIcon icon={faUser} className="absolute top-1/2 left-4 -translate-y-1/2 text-blue-500" />
+      <input
+        id="name"
+        type="text"
+        placeholder=" "
+        className="peer w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
+      />
+      <label
+        htmlFor="name"
+        className="absolute left-12 top-1/2 -translate-y-1/2 text-gray-400 text-sm transition-all
+                   peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500
+                   peer-valid:-top-3 peer-valid:text-xs peer-valid:text-blue-500"
+      >
+        Full Name
+      </label>
+    </div>
 
-                </div>
-                  <div className="inputGroup flex sm:px-2">
-                   <label htmlFor="Email" className="w-full  TEXT-GRAY-700 ">Email:
-                   </label>
-                 <input  id="Email" className='rounded-md focus:ring-2 
-                 focus:outline-none focus:border-green-600
-                  my-2 p-2 border-4 border-green-300 sm:text-xl hover:text-red-500' 
-                  placeholder="Enter Your Email" type="text" />
+    {/* Email */}
+    <div className="relative mb-5">
+      <FontAwesomeIcon icon={faEnvelope} className="absolute top-1/2 left-4 -translate-y-1/2 text-blue-500" />
+      <input
+        id="Email"
+        type="text"
+        placeholder=" "
+        className="peer w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
+      />
+      <label
+        htmlFor="Email"
+        className="absolute left-12 top-1/2 -translate-y-1/2 text-gray-400 text-sm transition-all
+                   peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500
+                   peer-valid:-top-3 peer-valid:text-xs peer-valid:text-blue-500"
+      >
+        Email Address
+      </label>
+    </div>
 
-                </div>
+    {/* Password */}
+    <div className="relative mb-5">
+      <FontAwesomeIcon icon={faLock} className="absolute top-1/2 left-4 -translate-y-1/2 text-blue-500" />
+      <input
+        id="password"
+        type={showPassword ? "text" : "password"}
+        placeholder=" "
+        className="peer w-full pl-12 pr-12 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
+      />
+      <label
+        htmlFor="password"
+        className="absolute left-12 top-1/2 -translate-y-1/2 text-gray-400 text-sm transition-all
+                   peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500
+                   peer-valid:-top-3 peer-valid:text-xs peer-valid:text-blue-500"
+      >
+        Password
+      </label>
+      {/* Show password toggle */}
+      <button
+        type="button"
+        onClick={() => setShowPassword(!showPassword)}
+        className="absolute top-1/2 right-4 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+      >
+        {showPassword ? "Hide" : "Show"}
+      </button>
+    </div>
 
-               <div className="inputGroup flex  sm:px-2 ">
-                   <label htmlFor="Password" className="w-full TEXT-GRAY-700">Password:
-                   </label>
-              
-                 <input  id="password" className=' rounded-md focus:ring-2 
-                 focus:ring:blue-500 focus:outline-none focus:border-green-600
-                 sm:my-2 sm:p-2 border-4 border-green-300 sm:text-xl
-                  hover:text-red-500'
-                  placeholder="Enter Your Password" type="password" />
-                
-                </div>
-                 <div className="inputGroup flex  sm:px-2 ">
-                   <label htmlFor="Password2" className="w-full TEXT-GRAY-700">
-                    Confirm Password:
-                   </label>
-              
-                 <input  id="password2" className=' rounded-md focus:ring-2 focus:border-green-600 focus:ring:blue-500 focus:outline-none 
-                 sm:my-2 sm:p-2 border-4 border-green-300 sm:text-xl
-                  hover:text-red-500'
-                  placeholder="Confirm  Password" type="password" />
-              </div>
-               <div className="inputGroup flex  sm:px-2 ">
-                   <label htmlFor="Phone" className="w-full TEXT-GRAY-700">
-                    Phone:
-                   </label>
-              
-                 <input  id="Phone" className=' rounded-md focus:ring-2 focus:border-green-600 focus:ring:blue-500 focus:outline-none 
-                 sm:my-2 sm:p-2 border-4 border-green-300 sm:text-xl
-                  hover:text-red-500'
-                  placeholder="Enter Your Phone" type="Number" />
-              </div>
-              <div className="inputGroup flex  sm:px-2 ">
-                   <label htmlFor="Role" className="w-full TEXT-GRAY-700">
-                    Role:
-                   </label>
-                   <select name="Role" id="Role" value={Role} onChange={(e)=>{setRole(e.target.value)}} className=' rounded-md focus:ring-2 focus:border-green-600 focus:ring:blue-500 focus:outline-none 
-                 sm:my-2 sm:p-2 border-4 border-green-300 sm:text-xl
-                  hover:text-red-500'>
+    {/* Confirm Password */}
+    <div className="relative mb-5">
+      <FontAwesomeIcon icon={faLock} className="absolute top-1/2 left-4 -translate-y-1/2 text-blue-500" />
+      <input
+        required
+        id="password2"
+        type={showConfirmPassword ? "text" : "password"}
+        placeholder=" "
+        className="peer w-full pl-12 pr-12 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
+      />
+      <label
+        htmlFor="password2"
+        className="absolute left-12 top-1/2 -translate-y-1/2 text-gray-400 text-sm transition-all
+                   peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500
+                   peer-valid:-top-3 peer-valid:text-xs peer-valid:text-blue-500"
+      >
+        Confirm Password
+      </label>
+      {/* Show confirm password toggle */}
+      <button
+        type="button"
+        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+        className="absolute top-1/2 right-4 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+      >
+        {showConfirmPassword ? "Hide" : "Show"}
+      </button>
+    </div>
 
-                    <option value="" >Select Role</option>
-                    <option value="doctor">Doctor</option>
-                    <option value="admin">Admin</option>
-                     <option value="user">User</option>
+    {/* Phone */}
+    <div className="relative mb-5">
+      <FontAwesomeIcon icon={faPhone} className="absolute top-1/2 left-4 -translate-y-1/2 text-blue-500" />
+      <input
+        id="Phone"
+        type="number"
+        placeholder=" "
+        className="peer w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
+      />
+      <label
+        htmlFor="Phone"
+        className="absolute left-12 top-1/2 -translate-y-1/2 text-gray-400 text-sm transition-all
+                   peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm
+                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500
+                   peer-valid:-top-3 peer-valid:text-xs peer-valid:text-blue-500"
+      >
+        Phone Number
+      </label>
+    </div>
 
-                   </select>
-                  </div>
-                  {Role==="doctor" && (
-                    <>
-                  <div className="inputGroup flex  sm:px-2 ">
-                   <label htmlFor="Specialization" className="w-full TEXT-GRAY-700">
-                    Specialization:
-                   </label>
-                 <input  type="text"
-                 name="Specialization"
-                 placeholder="Specialization" 
-                 className=' rounded-md focus:ring-2 focus:border-green-600 focus:ring:blue-500 focus:outline-none 
-                 sm:my-2 sm:p-2 border-4 border-green-300 sm:text-xl
-                  hover:text-red-500'
-                    /> </div>
-                  <div className="inputGroup flex  sm:px-2 ">
-                  <label htmlFor="Experience" className="w-full TEXT-GRAY-700">
-                    Experience:
-                   </label>
-                 <input
-                 type="number"
-                 name="Experience"
-                placeholder="Experience (years)"
-                 className=' rounded-md focus:ring-2 focus:border-green-600 focus:ring:blue-500 focus:outline-none 
-                 sm:my-2 sm:p-2 border-4 border-green-300 sm:text-xl
-                  hover:text-red-500'
-                />
-              </div> </>
-              )}
+    {/* Role */}
+    <div className="relative mb-5">
+      <FontAwesomeIcon icon={faUserShield} className="absolute top-1/2 left-4 -translate-y-1/2 text-blue-500" />
+      <select
+        id="Role"
+        value={Role}
+        onChange={(e) => setRole(e.target.value)}
+        className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+      >
+        <option value="">Select Role</option>
+        <option value="doctor">Doctor</option>
+        <option value="admin">Admin</option>
+        <option value="user">User</option>
+      </select>
+    </div>
 
-              
+  {/* Doctor Fields */}
+{Role === "doctor" && (
+  <div className="mt-6 rounded-2xl bg-white p-6 shadow-lg border border-gray-100">
+    <h3 className="text-lg font-semibold text-gray-700 mb-4">
+      Doctor Information
+    </h3>
 
-                   <div className="inputGroup sm:px-32 flex flex-rows">
-                    <Link to="/">Alrady have an account</Link>
-                   <button type='submit' className='mt-4 w-full bg-blue-600
-                    text-white px-4 py-2  rounded-xl hover:bg-blue-700 transition'>Submit
-                    </button>          
-                </div>
+    {/* Specialization */}
+    <div className="relative mb-6">
+      <FontAwesomeIcon
+        icon={faStethoscope}
+        className="absolute top-1/2 left-4 -translate-y-1/2 text-blue-500"
+      />
 
-            </form>
+      <input
+        name="Specialization"
+        type="text"
+        required
+        placeholder=" "
+        className="peer w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300
+                   focus:border-blue-500 focus:ring-2 focus:ring-blue-200
+                   outline-none transition"
+      />
+
+      <label
+        className="absolute left-12 top-1/2 -translate-y-1/2 text-gray-400 text-sm
+                   transition-all pointer-events-none
+                   peer-placeholder-shown:top-1/2
+                   peer-placeholder-shown:text-sm
+                   peer-focus:-top-2
+                   peer-focus:text-xs
+                   peer-focus:text-blue-500
+                   peer-valid:-top-2
+                   peer-valid:text-xs
+                   peer-valid:text-blue-500
+                   bg-white px-1"
+      >
+        Specialization
+      </label>
+    </div>
+
+    {/* Experience */}
+    <div className="relative">
+      <FontAwesomeIcon
+        icon={faBriefcase}
+        className="absolute top-1/2 left-4 -translate-y-1/2 text-blue-500"
+      />
+
+      <input
+        name="Experience"
+        type="number"
+        required
+        placeholder=" "
+        className="peer w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300
+                   focus:border-blue-500 focus:ring-2 focus:ring-blue-200
+                   outline-none transition"
+      />
+
+      <label
+        className="absolute left-12 top-1/2 -translate-y-1/2 text-gray-400 text-sm
+                   transition-all pointer-events-none
+                   peer-placeholder-shown:top-1/2
+                   peer-placeholder-shown:text-sm
+                   peer-focus:-top-2
+                   peer-focus:text-xs
+                   peer-focus:text-blue-500
+                   peer-valid:-top-2
+                   peer-valid:text-xs
+                   peer-valid:text-blue-500
+                   bg-white px-1"
+      >
+        Experience (years)
+      </label>
+    </div>
+  </div>
+)}
+
+    {/* Footer */}
+    <div className="flex flex-col gap-4 mt-6">
+      <button type='button' onClick={() => setShowLogin(true)} className="text-blue-600 text-sm hover:underline">
+        Already have an account?
+      </button>
+
+      <button
+        type="submit"
+        className="
+          w-full py-3 rounded-xl
+          bg-gradient-to-r from-blue-600 to-indigo-600
+          text-white font-semibold
+          shadow-[0_15px_35px_rgba(37,99,235,0.45)]
+          hover:shadow-[0_20px_45px_rgba(37,99,235,0.65)]
+          hover:-translate-y-0.5
+          transition-all
+        "
+      >
+        Create Account
+      </button>
+    </div>
+  </form>
+</div>
+
+    {showLogin && (
+      <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-md px-4">
+        
+        <div className="
+          relative w-full max-w-lg
+          bg-transparent
+          animate-scaleIn
+        ">
+          
+          <Login onClose={() => setShowLogin(false)} />
+    
         </div>
+      </div>
+    )}
+</>
     );
 }
 export default Registration;
