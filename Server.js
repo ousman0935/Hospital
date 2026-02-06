@@ -14,13 +14,22 @@ dotenv.config();
 dbConnect();
 const allowedOrigins = [
   'http://localhost:3000',
- "https://hospital-1-q3bj.onrender.com/"
+ "https://my app/"
  
 ];
 const app=express();
 app.use(cors({
-    origin:allowedOrigins,
-    credentials:true,
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
 }));
 app.use(express.json());
 app.use(cookieParser());
