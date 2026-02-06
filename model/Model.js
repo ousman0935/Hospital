@@ -21,8 +21,8 @@ const user=mongoose.Schema({
         type:String,
          required:true} ,
 Location:{
-Region: { type: String, required: true, trim: true },
-  City: { type: String, trim: true, required: true }, 
+Region: { type: String, required: false, trim: true },
+  City: { type: String, trim: true, required: false }, 
   SubCity: { type: String, trim: true, default: null } 
 
 

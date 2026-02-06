@@ -54,7 +54,7 @@ const match=await bcrypt.compare(Password,user.Password);
     console.log(error)
     res.status(500).json({
       success:false,
-      message:"not succesfull"
+      message:error || "not succesfull"
     })
 
   }
