@@ -14,7 +14,7 @@ dotenv.config();
 dbConnect();
 const allowedOrigins = [
   'http://localhost:3000',
- "https://my app/"
+ "https://hospital-1-q3bj.onrender.com/"
  
 ];
 const app=express();
