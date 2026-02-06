@@ -12,9 +12,14 @@ import { docterRouter } from './routes/DocterRoutes.js'
 import { imageRouter } from './routes/imageRoutes.js'
 dotenv.config();
 dbConnect();
+const allowedOrigins = [
+  'http://localhost:3000',
+ "https://hospital-1-q3bj.onrender.com/"
+ 
+];
 const app=express();
 app.use(cors({
-    origin:"http://localhost:3000",
+    origin:allowedOrigins,
     credentials:true,
 }));
 app.use(express.json());
