@@ -10,6 +10,8 @@ import cors from 'cors'
 import { hospitalsRoutes } from './routes/hospitalsRoutes.js'
 import { docterRouter } from './routes/DocterRoutes.js'
 import { imageRouter } from './routes/imageRoutes.js'
+import { locationRouter } from './routes/locationRoutes.js'
+import { pingRouter } from './routes/PingRoute.js'
 dotenv.config();
 dbConnect();
 const allowedOrigins = [
@@ -37,7 +39,8 @@ const PORT=process.env.PORT || 3500;
 app.listen(PORT,(err)=>{
     console.log(`server is listing at port ${PORT}`)
 })
-
+app.use(pingRouter)
+app.use(locationRouter)
 app.use(refreshRouter);
 app.use(userRouter);
 app.use(LoginRouter);
