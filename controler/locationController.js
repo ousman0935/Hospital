@@ -5,6 +5,9 @@ export const addLocation = async (req, res) => {
   try {
     const { Region, City, SubCity } = req.body;
     const { id } = req.params;
+    console.log("REQ PARAMS ID:", req.params.id);
+console.log("REQ BODY:", req.body);
+
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid user id" });
