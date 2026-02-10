@@ -23,8 +23,12 @@ export const addLocation = async (req, res) => {
     // ✅ build update safely
     const updateData = {};
     if (Region) updateData["Location.Region"] = Region;
-    if (City) updateData["Location.City"] = City;
-    if (SubCity) updateData["Location.SubCity"] = SubCity;
+    if (City) {updateData["Location.City"] = City;
+      updateData["Location.SubCity"] = null;
+    }
+    if (SubCity) {updateData["Location.SubCity"] = SubCity;
+      updateData["Location.City"] = null;
+    }
 
     const locationUpdate = await userModel.findByIdAndUpdate(
       id,
