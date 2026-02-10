@@ -39,7 +39,7 @@ export const addLocation = async (req, res) => {
     if (!locationUpdate) {
       return res.status(404).json({ error: "User not found" });
     }
-    const user = await userModel.find(id)
+    const user = await userModel.findById(id)
 
     res.status(200).json({
       success: true,
