@@ -5,9 +5,6 @@ export const addLocation = async (req, res) => {
   try {
     const { Region, City, SubCity } = req.body;
     const { id } = req.params;
-    console.log("REQ PARAMS ID:", req.params.id);
-console.log("REQ BODY:", req.body);
-
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: "Invalid user id" });
@@ -42,11 +39,12 @@ console.log("REQ BODY:", req.body);
     if (!locationUpdate) {
       return res.status(404).json({ error: "User not found" });
     }
+    const user = await userModel.find(id)
 
     res.status(200).json({
       success: true,
       message: "Location updated successfully",
-      data: locationUpdate,
+      data: user,
     });
 
   } catch (error) {
