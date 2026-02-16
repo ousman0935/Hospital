@@ -12,6 +12,7 @@ import { docterRouter } from './routes/DocterRoutes.js'
 import { imageRouter } from './routes/imageRoutes.js'
 import { locationRouter } from './routes/locationRoutes.js'
 import { pingRouter } from './routes/PingRoute.js'
+import { docterAvalabilityRouter } from './routes/DocterAvaliabilityRoutes.js'
 dotenv.config();
 dbConnect();
 const allowedOrigins = [
@@ -39,6 +40,7 @@ const PORT=process.env.PORT || 3500;
 app.listen(PORT,(err)=>{
     console.log(`server is listing at port ${PORT}`)
 })
+app.use(docterAvalabilityRouter)
 app.use(pingRouter)
 app.use(locationRouter)
 app.use(refreshRouter);

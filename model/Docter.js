@@ -9,6 +9,7 @@ const DoctorSchema = new mongoose.Schema({
   },
   Phone: String,
   Experience: Number,
+  
   Specialization: {
   type: String,
   enum: [
@@ -27,6 +28,8 @@ const DoctorSchema = new mongoose.Schema({
  HospitalId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Hospital"
-  }
+  },
+
 });
+
 export const DoctorModel = mongoose.model("doctor", DoctorSchema);

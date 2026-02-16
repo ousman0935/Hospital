@@ -82,13 +82,13 @@ export const deleteUser=async (req,res)=>{
 export const addAccount=async (req,res)=>
     { try {
          console.log(req.body);
-        const {Name,Email,Phone,password1,password2,Role}=req.body;
-     if (!Name || !Email || !Phone || !password1 || !password2)
+        const {Name,Email,Phone,Password1,Password2,Role}=req.body;
+     if (!Name || !Email || !Phone || !Password1 || !Password2)
              return res.status(400).json({"message":"All Fileds are required"})
-        if(password1!==password2) 
+        if(Password1!==Password2) 
             return res.status(400).json({"message":" password don't match"})
 
-        const hashedPassword=await bcrypt.hash(password1,10);
+        const hashedPassword=await bcrypt.hash(Password1,10);
         const existUser=await userModel.findOne({Email})
       if(existUser)  return res.status(400).json({"message":"the Email registerd before"})
        const newuser=await userModel.create({Name,Email ,Phone ,Password:hashedPassword,Role})
