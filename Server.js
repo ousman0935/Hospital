@@ -13,6 +13,8 @@ import { imageRouter } from './routes/imageRoutes.js'
 import { locationRouter } from './routes/locationRoutes.js'
 import { pingRouter } from './routes/PingRoute.js'
 import { docterAvalabilityRouter } from './routes/DocterAvaliabilityRoutes.js'
+import { specializationsRouter } from './routes/specializationsRoutes.js'
+import { divisionRouter } from './routes/DivisionRoutes.js'
 dotenv.config();
 dbConnect();
 const allowedOrigins = [
@@ -49,3 +51,5 @@ app.use(LoginRouter);
 app.use(hospitalsRoutes);
 app.use(docterRouter);
 app.use(imageRouter);
+app.use(specializationsRouter);
+app.use(divisionRouter);

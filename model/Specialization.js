@@ -7,9 +7,9 @@ const SpecializationScehma=new mongoose.Schema(
           trim: true
   },
   division: {
-      type: String,
-      required: true,
-      trim: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref:'Division',
+      required: true
     }
 }
     , { timestamps: true }
