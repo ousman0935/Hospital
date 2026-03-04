@@ -4,7 +4,7 @@ export const getDivisions=async(req,res)=>{
   
        const divisionList=await DivisionModel.find({status:true});
        if(!divisionList){
-    return res.status(400).json({message:"not successfully! "})
+    return res.status(400).json({message:"not successfull! "})
 
        }
       res.status(200).json({divisionList:divisionList});
@@ -15,6 +15,18 @@ export const getDivisions=async(req,res)=>{
        console.log(error); 
     }
 
+}
+export const getOneDivision=async(req,res)=>{
+   try {
+      const {id}=req?.params;
+   } catch (error) {
+      return res.status(500).json({message:"Internal server error!"})
+   }
+   const division=await DivisionModel.findById({id});
+  res.status(200).json({division:division})
+
+
+  
 }
 export const addDivision=async(req,res)=>{
    try {

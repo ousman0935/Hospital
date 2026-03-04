@@ -19,7 +19,7 @@ dotenv.config();
 dbConnect();
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://hospital-frontend-64xi.onrender.com'
+  'https://hospitalbookking.netlify.app/'
 ];
 
 const app=express();
