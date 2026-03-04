@@ -19,7 +19,7 @@ dotenv.config();
 dbConnect();
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://hospitalbookking.netlify.app/'
+  'https://hospitalbookking.netlify.app'
 ];
 
 const app=express();
